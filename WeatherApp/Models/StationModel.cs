@@ -1,26 +1,26 @@
-﻿namespace WeatherApp.Database.Entities;
+﻿namespace WeatherApp.Models;
 
-public class Location
+public class StationModel
 {
+    public int StationId { get; set; }
     public int LocationId { get; set; }
     public decimal Latitude { get; set; }
     public decimal Longitude { get; set; }
     public string City { get; set; } = null!;
     public string Country { get; set; } = null!;
-    public decimal Elevation { get; set; }
 
-    public Location()
+    public StationModel()
     {
         
     }
 
-    public Location(int locationId, decimal latitude, decimal longitude, string city, string country, decimal elevation)
+    public StationModel(int stationId, int locationId, decimal latitude, decimal longitude, string city, string country)
     {
+        StationId = stationId;
         LocationId = locationId;
         Latitude = latitude;
         Longitude = longitude;
         City = city;
         Country = country;
-        Elevation = elevation;
     }
 }

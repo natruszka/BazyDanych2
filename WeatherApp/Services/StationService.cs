@@ -3,10 +3,11 @@ using System.Transactions;
 using WeatherApp.Database;
 using WeatherApp.Database.Entities;
 using WeatherApp.Models;
+using WeatherApp.Services.Interfaces;
 
 namespace WeatherApp.Services;
 
-public class StationService
+public class StationService : IStationService
 {
     private readonly WeatherDbContext _dbContext;
     private SqlConnection _connection;

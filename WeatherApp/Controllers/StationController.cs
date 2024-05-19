@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeatherApp.Resources;
-using WeatherApp.Services;
+using WeatherApp.Services.Interfaces;
 
 namespace WeatherApp.Controllers;
 
@@ -8,9 +8,9 @@ namespace WeatherApp.Controllers;
 [ApiController]
 public class StationController : ControllerBase
 {
-    private StationService _stationService = null!;
+    private IStationService _stationService = null!;
 
-    public StationController(StationService stationService)
+    public StationController(IStationService stationService)
     {
         _stationService = stationService;
     }

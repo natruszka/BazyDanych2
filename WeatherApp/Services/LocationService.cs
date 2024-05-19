@@ -1,12 +1,12 @@
 ﻿using System.Data.SqlClient;
 using System.Transactions;
-using Microsoft.AspNetCore.Http.HttpResults;
 using WeatherApp.Database;
 using WeatherApp.Database.Entities;
+using WeatherApp.Services.Interfaces;
 
 namespace WeatherApp.Services;
 
-public class LocationService
+public class LocationService : ILocationService
 {
     private readonly WeatherDbContext _dbContext;
     private SqlConnection _connection;

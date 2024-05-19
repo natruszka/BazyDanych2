@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WeatherApp.Resources;
 using WeatherApp.Services;
+using WeatherApp.Services.Interfaces;
 
 namespace WeatherApp.Controllers;
 
@@ -9,9 +10,9 @@ namespace WeatherApp.Controllers;
 [Route("locations")]
 public class LocationsController : ControllerBase
 {
-    private LocationService _locationService = null!;
+    private ILocationService _locationService = null!;
 
-    public LocationsController(LocationService locationService)
+    public LocationsController(ILocationService locationService)
     {
         _locationService = locationService;
     }

@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<WeatherDbContext>();
 builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<StationService>();
+builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<WeatherService>();
 var app = builder.Build();
 

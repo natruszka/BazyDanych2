@@ -1,1 +1,33 @@
-<p>readings works!</p>
+<div class="container bg-dark" style="padding-bottom: 30px;">
+  <div class=" bg-dark" *ngFor="let server of readings | keyvalue; index as i">
+    <div class="row" style="height: 50px; align-items: center; font-size: large">
+      <div class="col bg-dark text-white">Server: {{server.key}}</div>
+    </div>
+    <table class="table table-striped table-dark table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">Reading ID</th>
+        <th scope="col">Station ID</th>
+        <th scope="col">Timestamp</th>
+        <th scope="col">Temperature</th>
+        <th scope="col">Humidity</th>
+        <th scope="col">Windspeed</th>
+        <th scope="col">Precipitation</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let reading of server.value">
+        <td> {{reading.readingId}}</td>
+        <td> {{reading.stationId}}</td>
+        <td> {{reading.timestamp}}</td>
+        <td> {{reading.temperature}}</td>
+        <td> {{reading.humidity}}</td>
+        <td> {{reading.windspeed}}</td>
+        <td> {{reading.precipitation}}</td>
+      </tr>
+      </tbody>
+    </table>
+<!--    <a class="btn btn-purple" [routerLink]="['/stations/add', i]">Add new station to server</a>-->
+  </div>
+</div>

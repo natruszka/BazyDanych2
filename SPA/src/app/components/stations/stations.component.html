@@ -1,1 +1,56 @@
-<p>stations works!</p>
+<div class="container bg-dark" style="padding-bottom: 30px;">
+<div class=" bg-dark" style="height: 50px;"><h1  class="text-white">Raw station data</h1></div>
+<div class=" bg-dark" *ngFor="let server of stations | keyvalue; index as i">
+  <div class="row" style="height: 50px; align-items: center; font-size: large">
+    <div class="col bg-dark text-white">Server: {{server.key}}</div>
+  </div>
+  <table class="table table-striped table-dark table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Station ID</th>
+      <th scope="col">Location ID</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let station of server.value">
+      <td> {{station.stationId}}</td>
+      <td> {{station.locationId}}</td>
+      <td> {{station.latitude}}</td>
+      <td> {{station.longitude}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <a class="btn btn-purple" [routerLink]="['/stations/add', i]">Add new station to server</a>
+</div>
+<div class=" bg-dark" style="height: 50px; margin-top: 30px"><h1  class="text-white">Station data with corresponding city and country</h1></div>
+<div class="bg-dark" *ngFor="let server of stationsView | keyvalue; index as i">
+  <div class="row" style="height: 50px; align-items: center; font-size: large">
+    <div class="col bg-dark text-white">Server: {{server.key}}</div>
+  </div>
+  <table class="table table-striped table-dark table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Station ID</th>
+      <th scope="col">Location ID</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+      <th scope="col">City</th>
+      <th scope="col">Country</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let station of server.value">
+      <td> {{station.stationId}}</td>
+      <td> {{station.locationId}}</td>
+      <td> {{station.latitude}}</td>
+      <td> {{station.longitude}}</td>
+      <td> {{station.city}}</td>
+      <td> {{station.country}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>

@@ -1,0 +1,29 @@
+<div  data-bs-theme="dark">
+<div class="container" style="width: 50%; margin-top: 50px;"  >
+  <form class="form-control border" [formGroup]="frameForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Latitude</label>
+      <input class="form-control" id="latitude" type="number" min="-90" max="90" formControlName="latitude"/>
+    </div>
+    <div class="form-group">
+      <label>Longitude</label>
+      <input class="form-control" id="longitude" type="number" min="-180" max="180" formControlName="longitude"/>
+    </div>
+    <div class="form-group">
+      <label>City</label>
+    </div>
+    <div class="form-group">
+      <input class="form-control" id="city" type="text" formControlName="city"/>
+      <label>Country</label>
+    </div>
+    <div class="form-group">
+      <input class="form-control" id="country" type="text" formControlName="country"/>
+      <label>Elevation</label>
+    </div>
+    <div class="form-group">
+      <input class="form-control" id="elevation" type="number" formControlName="elevation"/>
+      <button class="m-2 btn btn-purple" type="submit" [disabled]="!frameForm.valid">Submit</button>
+    </div>
+  </form>
+</div>
+</div>

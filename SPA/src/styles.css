@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+body{
+
+  background: url("assets/rain.jpg") fixed;
+  background-size: cover;
+}
+
+.btn-purple
+{
+  color: white;
+  background-color: #977141 !important;
+}

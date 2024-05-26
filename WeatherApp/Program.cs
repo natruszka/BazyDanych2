@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<WeatherDbContext>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IStationService, StationService>();
-builder.Services.AddScoped<WeatherService>();
+builder.Services.AddScoped<IWeatherService,WeatherService>();
+builder.Services.AddDateOnlyTimeOnlyStringConverters();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

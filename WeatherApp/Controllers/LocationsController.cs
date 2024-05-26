@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.Data.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using WeatherApp.DTOs;
 using WeatherApp.Resources;
 using WeatherApp.Services;
 using WeatherApp.Services.Interfaces;
@@ -39,7 +41,24 @@ public class LocationsController : ControllerBase
         }
         catch (ArgumentOutOfRangeException)
         {
-            return NotFound(ErrorMessages.ServerNotFound);
+            return BadRequest(ErrorMessages.ServerNotFound);
+        }
+    }
+    [HttpPost("{server:int}")]
+    public async Task<IActionResult> AddLocation(int server, [FromBody] LocationDto location)
+    {
+        try
+        {
+            await _locationService.AddLocation(server, location);
+            return Ok();
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return BadRequest(ErrorMessages.ServerNotFound);
+        }
+        catch (DbException)
+        {
+            return NotFound(ErrorMessages.TransactionFailure);
         }
     }
 }

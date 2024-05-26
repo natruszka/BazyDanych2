@@ -1,4 +1,5 @@
 ﻿using WeatherApp.Database.Entities;
+using WeatherApp.DTOs;
 using WeatherApp.Models;
 
 namespace WeatherApp.Services.Interfaces;
@@ -12,4 +13,6 @@ public interface IStationService
 
     Task<Dictionary<string, List<StationModel>>> GetStationsFromLocation(decimal latitude,
         decimal longitude, int radius);
+
+    Task AddStation(int server, StationDto station);
 }

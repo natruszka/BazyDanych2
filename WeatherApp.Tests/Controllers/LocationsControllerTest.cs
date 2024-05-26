@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -8,6 +9,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using WeatherApp.Controllers;
 using WeatherApp.Database.Entities;
+using WeatherApp.DTOs;
 using WeatherApp.Resources;
 using WeatherApp.Services.Interfaces;
 
@@ -60,16 +62,39 @@ public class LocationsControllerTest
     }
 
     [Test]
-    public async Task GetLocationFromServer_ReturnsNotFound()
+    public async Task GetLocationFromServer_ReturnsBadRequest()
     {
         var serverNum = 0;
         _locationService.GetLocationFromServer(serverNum).ThrowsAsync(new ArgumentOutOfRangeException());
 
-        var result = await _controller.GetLocationFromServer(serverNum) as NotFoundObjectResult;
+        var result = await _controller.GetLocationFromServer(serverNum) as BadRequestObjectResult;
         
         ClassicAssert.IsNotNull(result);
-        ClassicAssert.AreEqual(404, result!.StatusCode);
+        ClassicAssert.AreEqual(400, result!.StatusCode);
         ClassicAssert.AreEqual(ErrorMessages.ServerNotFound, result.Value);
     }
+    [Test]
+    public async Task AddLocation_ReturnsOk()
+    {
+        var serverNum = 0;
+        var location = new LocationDto();
+        _locationService.AddLocation(serverNum, Arg.Any<LocationDto>()).Returns(Task.CompletedTask);
 
+        var result = await _controller.AddLocation(serverNum, location) as OkResult;
+        
+        ClassicAssert.IsNotNull(result);
+        ClassicAssert.AreEqual(200, result!.StatusCode);
+    }
+    [Test]
+    public async Task AddLocation_ReturnsBadRequest()
+    {
+        var serverNum = 0;
+        var location = new LocationDto();
+        _locationService.AddLocation(serverNum, Arg.Any<LocationDto>()).ThrowsAsync(new ArgumentOutOfRangeException());
+
+        var result = await _controller.AddLocation(serverNum, location) as BadRequestObjectResult;
+        
+        ClassicAssert.IsNotNull(result);
+        ClassicAssert.AreEqual(400, result!.StatusCode);
+    }
 }

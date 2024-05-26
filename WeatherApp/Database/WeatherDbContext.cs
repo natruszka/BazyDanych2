@@ -12,7 +12,8 @@ public class WeatherDbContext
         _connection = new SqlConnection(@"
             Data Source=LAPTOP-TKOQ32I7\SQLEXPRESS;
             Database=WeatherDatabase;
-            Trusted_Connection=True");
+            Trusted_Connection=True;
+            MultipleActiveResultSets=True");
         _connection.Open();
     }
 

@@ -2,6 +2,7 @@
 using System.Transactions;
 using WeatherApp.Database;
 using WeatherApp.Database.Entities;
+using WeatherApp.DTOs;
 using WeatherApp.Services.Interfaces;
 
 namespace WeatherApp.Services;
@@ -55,6 +56,30 @@ public class LocationService : ILocationService
         {
             await using var reader = await command.ExecuteReaderAsync();
             return ReadLocationRange(reader);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task AddLocation(int serverNum, LocationDto location)
+    {
+        if (serverNum < 0 || serverNum >= _servers.Count)
+            throw new ArgumentOutOfRangeException();
+        var server = _servers[serverNum];
+        SqlCommand command = new(
+            $"Insert into {server}.[WeatherDatabase].[dbo].[locations] (latitude, longitude, city, country, elevation) values (@latitude, @longitude, @city, @country, @elevation)",
+            _connection);
+        command.Parameters.AddWithValue("@latitude", location.Latitude);
+        command.Parameters.AddWithValue("@longitude", location.Longitude);
+        command.Parameters.AddWithValue("@city", location.City);
+        command.Parameters.AddWithValue("@country", location.Country);
+        command.Parameters.AddWithValue("@elevation", location.Elevation);
+        try
+        {
+            await command.ExecuteNonQueryAsync();
         }
         catch (Exception e)
         {

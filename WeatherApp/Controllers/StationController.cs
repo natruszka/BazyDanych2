@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Data.Common;
+using Microsoft.AspNetCore.Mvc;
+using WeatherApp.DTOs;
 using WeatherApp.Resources;
 using WeatherApp.Services.Interfaces;
 
@@ -37,7 +39,7 @@ public class StationController : ControllerBase
         }
         catch (ArgumentOutOfRangeException)
         {
-            return NotFound(ErrorMessages.ServerNotFound);
+            return BadRequest(ErrorMessages.ServerNotFound);
         }
     }
 
@@ -63,7 +65,7 @@ public class StationController : ControllerBase
         }
         catch (ArgumentOutOfRangeException)
         {
-            return NotFound(ErrorMessages.ServerNotFound);
+            return BadRequest(ErrorMessages.ServerNotFound);
         }
     }
 
@@ -82,6 +84,23 @@ public class StationController : ControllerBase
         catch (InvalidOperationException)
         {
             return NotFound(ErrorMessages.TransactionFailure);
+        }
+    }
+    [HttpPost("{server:int}")]
+    public async Task<IActionResult> AddStation(int server, [FromBody] StationDto station)
+    {
+        try
+        {
+            await _stationService.AddStation(server, station);
+            return Ok();
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return BadRequest(ErrorMessages.ServerNotFound);
+        }
+        catch (DbException)
+        {
+            return NotFound(ErrorMessages.LocationNotFound);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Transactions;
 using WeatherApp.Database;
 using WeatherApp.Database.Entities;
+using WeatherApp.DTOs;
 using WeatherApp.Models;
 using WeatherApp.Services.Interfaces;
 
@@ -132,7 +133,7 @@ public class StationService : IStationService
                 SqlCommand command = new(
                     "SELECT s.station_id, s.location_id, s.latitude, s.longitude, l.city, l.country " +
                     $"FROM {server}.[WeatherDatabase].[dbo].[stations] s " +
-                    $"JOIN {server}.[WeatherDatabase].[dbo].[locations] l ON s.location_id = l.location_id" +
+                    $"JOIN {server}.[WeatherDatabase].[dbo].[locations] l ON s.location_id = l.location_id " +
                     $"WHERE s.latitude BETWEEN {minLatitude} AND {maxLatitude} AND s.longitude BETWEEN {minLongitude} AND {maxLongitude};",
                     _connection);
                 await using var reader = await command.ExecuteReaderAsync();
@@ -148,6 +149,21 @@ public class StationService : IStationService
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    public async Task AddStation(int serverNum, StationDto station)
+    {
+        if (serverNum < 0 || serverNum >= _servers.Count)
+            throw new ArgumentOutOfRangeException();
+        var server = _servers[serverNum];
+        SqlCommand command = new(
+            $"INSERT INTO {server}.[WeatherDatabase].[dbo].[stations] (location_id, latitude, longitude) " +
+            "VALUES (@location_id, @latitude, @longitude);",
+            _connection);
+        command.Parameters.AddWithValue("@location_id", station.LocationId);
+        command.Parameters.AddWithValue("@latitude", station.Latitude);
+        command.Parameters.AddWithValue("@longitude", station.Longitude);
+        await command.ExecuteNonQueryAsync();
     }
 
     private List<Station> ReadStationRange(SqlDataReader reader)

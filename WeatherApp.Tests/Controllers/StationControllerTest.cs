@@ -8,6 +8,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using WeatherApp.Controllers;
 using WeatherApp.Database.Entities;
+using WeatherApp.DTOs;
 using WeatherApp.Models;
 using WeatherApp.Resources;
 using WeatherApp.Services.Interfaces;
@@ -60,15 +61,15 @@ public class StationControllerTest
         ClassicAssert.AreEqual(200, result!.StatusCode);
     }
     [Test]
-    public async Task GetServerStations_ReturnsNotFound()
+    public async Task GetServerStations_ReturnsBadRequest()
     {
         var serverNum = 0;
         _stationService.GetAllStationsFromServer(serverNum).ThrowsAsync(new ArgumentOutOfRangeException());
 
-        var result = await _stationController.GetServerStations(serverNum) as NotFoundObjectResult;
+        var result = await _stationController.GetServerStations(serverNum) as BadRequestObjectResult;
         
         ClassicAssert.IsNotNull(result);
-        ClassicAssert.AreEqual(404, result!.StatusCode);
+        ClassicAssert.AreEqual(400, result!.StatusCode);
         ClassicAssert.AreEqual(ErrorMessages.ServerNotFound, result.Value);
 
     }
@@ -105,15 +106,15 @@ public class StationControllerTest
         ClassicAssert.AreEqual(200, result!.StatusCode);
     }
     [Test]
-    public async Task GetServerStationsView_ReturnsNotFound()
+    public async Task GetServerStationsView_ReturnsBadRequest()
     {
         var serverNum = 0;
         _stationService.GetAllStationModelsFromServer(serverNum).ThrowsAsync(new ArgumentOutOfRangeException());
 
-        var result = await _stationController.GetServerStationsView(serverNum) as NotFoundObjectResult;
+        var result = await _stationController.GetServerStationsView(serverNum) as BadRequestObjectResult;
         
         ClassicAssert.IsNotNull(result);
-        ClassicAssert.AreEqual(404, result!.StatusCode);
+        ClassicAssert.AreEqual(400, result!.StatusCode);
         ClassicAssert.AreEqual(ErrorMessages.ServerNotFound, result.Value);
 
     }
@@ -157,5 +158,29 @@ public class StationControllerTest
         ClassicAssert.IsNotNull(result);
         ClassicAssert.AreEqual(404, result!.StatusCode);
         ClassicAssert.AreEqual(ErrorMessages.TransactionFailure, result.Value);
+    }
+    [Test]
+    public async Task TestAddStation_ReturnsOk()
+    {
+        var serverNum = 0;
+        var station = new StationDto();
+        _stationService.AddStation(serverNum, Arg.Any<StationDto>()).Returns(Task.CompletedTask);
+
+        var result = await _stationController.AddStation(serverNum, station) as OkResult;
+        
+        ClassicAssert.IsNotNull(result);
+        ClassicAssert.AreEqual(200, result!.StatusCode);
+    }
+    [Test]
+    public async Task TestAddStation_ReturnsBadRequest()
+    {
+        var serverNum = 0;
+        var station = new StationDto();
+        _stationService.AddStation(serverNum, Arg.Any<StationDto>()).ThrowsAsync(new ArgumentOutOfRangeException());
+
+        var result = await _stationController.AddStation(serverNum, station) as BadRequestObjectResult;
+        
+        ClassicAssert.IsNotNull(result);
+        ClassicAssert.AreEqual(400, result!.StatusCode);
     }
 }

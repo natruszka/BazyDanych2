@@ -19,4 +19,8 @@ export class LocationsService {
   {
     this.http.post(environment.baseUrl+'locations/' + id, locationDto).subscribe(response =>{console.log(response)})
   }
+  getAllLocationIds(serverId: number): Observable<number[]>
+  {
+    return this.http.get<number[]>(environment.baseUrl+'locations/' + serverId +'/ids').pipe(tap(data=>console.log(data)));
+  }
 }

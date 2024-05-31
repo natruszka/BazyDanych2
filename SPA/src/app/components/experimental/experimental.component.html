@@ -1,0 +1,54 @@
+<div class="container bg-dark" style="padding-bottom: 30px;">
+  <div class="row justify-content-md-center" style="padding-top: 30px;">
+  <div class="alert col-8" role="alert">
+    <h4 class="alert-heading  text-danger">Warning!</h4>
+    <p class="text-bg-dark">Features below are <b>experimental</b>! They operate on large amounts of data,
+    which may take a lot of time depending on how many readings connected databases contain.</p>
+  <hr>
+    <a class="link-light" [routerLink]="['']">Take me back to safety</a>
+  </div>
+  </div>
+  <div class="row">
+    <div class = "col-6">
+      <div class="card bg-dark">
+        <img class="card-img-top" src="assets/data.jpg" alt="Card image cap" height="344">
+        <div class="card-body">
+          <h4 class="card-title text-bg-dark">Aggregate all data</h4>
+          <p class="card-body text-bg-dark">Gathers data from all readings and
+            upserts all values in "Data" section. Since it operates on all readings in all databases
+          this operation may take some time.</p>
+          <a class="btn btn-purple">Aggregate data</a>
+        </div>
+      </div>
+    </div>
+    <div class = "col-6">
+      <div class="card bg-dark">
+        <img class="card-img-top" src="assets/chaosjpg.jpg" alt="Card image cap" height="344">
+        <div class="card-body">
+          <h4 class="card-title text-bg-dark">Randomize data for given location on server</h4>
+          <p class="card-body text-bg-dark">Add randomized readings to every station in given location on given day.
+          Adds ten readings per station.</p>
+          <form class="form-control  border bg-dark text-bg-dark">
+          <div class="form-group">
+            <label>Server</label>
+            <select class="form-control"><option></option></select>
+          </div>
+          <div class="form-group">
+            <label>Location ID</label>
+            <select class="form-control"><option></option></select>
+          </div>
+            <div class="form-group">
+              <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

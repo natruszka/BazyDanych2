@@ -23,7 +23,7 @@
     </tr>
     </tbody>
   </table>
-  <a class="btn btn-purple" [routerLink]="['/stations/add', i]">Add new station to server</a>
+  <a class="btn btn-purple" [routerLink]="['/stations/add', server.key]">Add new station to server</a>
 </div>
 <div class=" bg-dark" style="height: 50px; margin-top: 30px"><h1  class="text-white">Station data with corresponding city and country</h1></div>
 <div class="bg-dark" *ngFor="let server of stationsView | keyvalue; index as i">

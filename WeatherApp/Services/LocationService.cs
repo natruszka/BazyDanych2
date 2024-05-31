@@ -88,6 +88,30 @@ public class LocationService : ILocationService
         }
     }
 
+    public async Task<List<int>> GetAllLocationIds(int serverNum)
+    {
+        if (serverNum < 0 || serverNum >= _servers.Count)
+            throw new ArgumentOutOfRangeException();
+        var server = _servers[serverNum];
+        SqlCommand command = new($"Select location_id from {server}.[WeatherDatabase].[dbo].[locations]",
+            _connection);
+        try
+        {
+            await using var reader = await command.ExecuteReaderAsync();
+            var list = new List<int>();
+            while (reader.Read())
+            {
+                list.Add(Convert.ToInt32(reader["location_id"]));
+            }
+
+            return list;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     private List<Location> ReadLocationRange(SqlDataReader reader)
     {
         var listLocations = new List<Location>();

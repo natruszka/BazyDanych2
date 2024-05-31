@@ -3,6 +3,7 @@ import {FormBuilder, Validators, FormArray, FormGroup, ReactiveFormsModule} from
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {LocationsService} from "../../services/locations.service";
 import {LocationFormModel} from "../../models/location-form-model";
+import {servers} from "../../environments/environment";
 
 @Component({
   selector: 'app-locations-add',
@@ -27,7 +28,12 @@ export class LocationsAddComponent implements OnInit{
   ngOnInit(): void {
     this.route.paramMap.subscribe(
       params => {
-        this.id = params.get('id') != null ? Number(params.get('id')!) : 0;
+        const key = params.get('id');
+        if (key && servers.hasOwnProperty(key)) {
+          this.id = servers[key];
+        } else {
+          this.id = 0; // Default value if the key is not found or null
+        }
       })
   }
   onSubmit(){

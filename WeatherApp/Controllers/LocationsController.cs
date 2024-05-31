@@ -61,4 +61,16 @@ public class LocationsController : ControllerBase
             return NotFound(ErrorMessages.TransactionFailure);
         }
     }
+    [HttpGet("{server:int}/ids")]
+    public async Task<IActionResult> GetAllLocationIds(int server)
+    {
+        try
+        {
+            return Ok(await _locationService.GetAllLocationIds(server));
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return BadRequest(ErrorMessages.ServerNotFound);
+        }
+    }
 }

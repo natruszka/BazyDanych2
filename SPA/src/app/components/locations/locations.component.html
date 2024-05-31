@@ -1,4 +1,4 @@
-<div class="container bg-dark" *ngFor="let server of locations | keyvalue; index as i">
+<div class="container bg-dark" style="padding-bottom: 50px;" *ngFor="let server of locations | keyvalue; index as i">
   <div class="row" style="height: 50px; align-items: center; font-size: large">
   <div class="col bg-dark text-white">Server: {{server.key}}</div>
   </div>
@@ -24,5 +24,5 @@
     </tr>
     </tbody>
   </table>
-  <a class="btn btn-purple" [routerLink]="['/locations/add', i]">Add new location to server</a>
+  <a class="btn btn-purple" [routerLink]="['/locations/add', server.key]">Add new location to server</a>
 </div>

@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<WeatherDbContext>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<ServerService>();
 builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IWeatherService,WeatherService>();
 builder.Services.AddDateOnlyTimeOnlyStringConverters();

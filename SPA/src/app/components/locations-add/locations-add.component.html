@@ -1,5 +1,11 @@
-<div  data-bs-theme="dark">
-<div class="container" style="width: 50%; margin-top: 50px;"  >
+<div class="container bg-dark" data-bs-theme="dark" style="padding-bottom: 110px;">
+  <div class="row justify-content-md-center">
+    <div class="col-8">
+  <div class="h1 text-center bg-dark text-bg-dark">Add new location</div>
+  </div>
+  </div>
+<div class="row justify-content-md-center" style="margin-top: 50px;"  >
+  <div class="col-8">
   <form class="form-control border" [formGroup]="frameForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label>Latitude</label>
@@ -25,5 +31,6 @@
       <button class="m-2 btn btn-purple" type="submit" [disabled]="!frameForm.valid">Submit</button>
     </div>
   </form>
+</div>
 </div>
 </div>

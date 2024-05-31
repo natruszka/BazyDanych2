@@ -5,6 +5,8 @@ import {StationsComponent} from "./components/stations/stations.component";
 import {ReadingsComponent} from "./components/readings/readings.component";
 import {DataComponent} from "./components/data/data.component";
 import {LocationsAddComponent} from "./components/locations-add/locations-add.component";
+import {ExperimentalComponent} from "./components/experimental/experimental.component";
+import {StationsAddComponent} from "./components/stations-add/stations-add.component";
 
 export const routes: Routes = [
   {path: "", pathMatch: "full", component: HomeComponent},
@@ -12,5 +14,7 @@ export const routes: Routes = [
   {path: "stations", pathMatch: "full", component: StationsComponent},
   {path: "readings", pathMatch: "full", component: ReadingsComponent},
   {path: "data", pathMatch: "full", component: DataComponent},
-  {path: "locations/add/:id", pathMatch: "full", component: LocationsAddComponent}
+  {path: "locations/add/:id", pathMatch: "full", component: LocationsAddComponent},
+  {path: "stations/add/:id", pathMatch: "full", component: StationsAddComponent},
+  {path: "experimental", pathMatch: "full", component: ExperimentalComponent}
 ];

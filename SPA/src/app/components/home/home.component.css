@@ -1,0 +1,30 @@
+.fix {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.logo {
+  text-align: center;
+  font-family: "Bauhaus 93", serif;
+  font-weight: bolder;
+  font-size: 70px;
+}
+.logo p {
+  margin-top: -100px;
+}
+.cloud
+{
+  font-size: 250px;
+}
+.sun
+{
+  position: fixed;
+  top: 60px;
+  left: 250px;
+}
+.clouds
+{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 280px;
+}

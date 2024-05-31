@@ -7,5 +7,8 @@ body{
 .btn-purple
 {
   color: white;
-  background-color: #977141 !important;
+  background-color: #13f0fb !important;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

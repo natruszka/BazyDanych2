@@ -6,6 +6,7 @@ import {LocationModel} from "../models/location-model";
 import {LocationFormModel} from "../models/location-form-model";
 import {StationModel} from "../models/station-model";
 import {StationViewModel} from "../models/station-view-model";
+import {StationFormModel} from "../models/station-form-model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class StationsService {
   {
     return this.http.get<{[id: string] : StationViewModel[]}>(environment.baseUrl+'stations/view').pipe(tap(data=>console.log(data)));
   }
-  addLocationToApi(id: number, locationDto: LocationFormModel)
+  addStationToApi(id: number, stationDto: StationFormModel)
   {
-    this.http.post(environment.baseUrl+'locations/' + id, locationDto).subscribe(response =>{console.log(response)})
+    this.http.post(environment.baseUrl+'stations/' + id, stationDto).subscribe(response =>{console.log(response)})
   }
 }

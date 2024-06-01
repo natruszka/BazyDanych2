@@ -4,6 +4,8 @@ import {Observable, tap} from "rxjs";
 import {DataModel} from "../models/data-model";
 import {environment} from "../environments/environment";
 import {query} from "@angular/animations";
+import {parallel} from "@angular/cdk/testing";
+import {H} from "@angular/cdk/keycodes";
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +30,22 @@ export class DataService {
     params.append('endDate', endDate);
     console.log(params)
     return this.http.get<DataModel[]>(environment.baseUrl+`weather/historical?startdate=${startDate}&endDate=${endDate}`, ).pipe(tap(data=>console.log(data)));
+  }
+  getHistoricalDataFromApi(startDate: Date, endDate: Date): Observable<DataModel[]>
+  {
+    return this.http.get<DataModel[]>(environment.baseUrl+`weather/historical?startdate=${startDate}&endDate=${endDate}`, ).pipe(tap(data=>console.log(data)));
+  }
+  aggregateData()
+  {
+    this.http.post(environment.baseUrl+'weather/aggregate', null).subscribe(response =>{console.log(response)});
+  }
+  getServerList() : Observable<{[key: string] : number}>
+  {
+    return this.http.get<{[key:string]:number}>(environment.baseUrl +'servers').pipe(tap(data=>console.log(data)));
+  }
+  seedData(serverId: number, locationId: number, date: Date)
+  {
+    // const dateString: string = this.formatDate(date);
+    this.http.post(environment.baseUrl+'weather/seed/'+serverId+'/'+locationId+`?date=${date}`, null).subscribe(response =>{console.log(response)});
   }
 }

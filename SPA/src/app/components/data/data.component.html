@@ -1,34 +1,55 @@
-<div class="container bg-dark" style="padding-bottom: 30px;">
-    <table class="table table-striped table-dark table-bordered">
-      <thead>
-      <tr>
-        <th scope="col">Data ID</th>
-        <th scope="col">Server ID</th>
-        <th scope="col">Location ID</th>
-        <th scope="col">Timestamp</th>
-        <th scope="col">Temperature</th>
-        <th scope="col">Min temperature</th>
-        <th scope="col">Max temperature</th>
-        <th scope="col">Humidity</th>
-        <th scope="col">Windspeed</th>
-        <th scope="col">Precipitation</th>
+<div class="container bg-dark" data-bs-theme="dark" style="padding-bottom: 30px;">
+  <div class="row justify-content-center" style="padding-bottom: 20px; padding-top: 10px;">
+    <div class="col-10 text-bg-dark h3">
+      Adjust start and end date of weather data. By default shows data from last 5 days.
+    </div>
+  </div>
+  <div class="row text-bg-dark">
+    <form class="form-control border" [formGroup]="frameForm">
+      <div class="row">
+        <div class="form-group col">
+          <label>Start date</label>
+          <input class="form-control m-auto" (change)="getHistoricalData()" id="startDate" type="date" formControlName="startDate"
+                 onfocus="this.max=new Date().toISOString().split('T')[0]">
+        </div>
+        <div class="form-group col">
+          <label>End date</label>
+          <input class="col form-control m-auto" (change)="getHistoricalData()" id="endDate" type="date" formControlName="endDate"
+                 onfocus="this.max=new Date().toISOString().split('T')[0]">
+        </div>
+      </div>
+    </form>
+  </div>
+  <table class="table table-striped table-dark table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Data ID</th>
+      <th scope="col">Server ID</th>
+      <th scope="col">Location ID</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Temperature</th>
+      <th scope="col">Min temperature</th>
+      <th scope="col">Max temperature</th>
+      <th scope="col">Humidity</th>
+      <th scope="col">Windspeed</th>
+      <th scope="col">Precipitation</th>
 
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let dataModel of data">
-        <td> {{dataModel.dataId}}</td>
-        <td> {{dataModel.serverId}}</td>
-        <td> {{dataModel.locationId}}</td>
-        <td> {{dataModel.timestamp}}</td>
-        <td> {{dataModel.temperature}}</td>
-        <td> {{dataModel.minTemperature}}</td>
-        <td> {{dataModel.maxTemperature}}</td>
-        <td> {{dataModel.humidity}}</td>
-        <td> {{dataModel.windSpeed}}</td>
-        <td> {{dataModel.precipitation}}</td>
-      </tr>
-      </tbody>
-    </table>
-    <!--    <a class="btn btn-purple" [routerLink]="['/stations/add', i]">Add new station to server</a>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let dataModel of data">
+      <td> {{dataModel.dataId}}</td>
+      <td> {{dataModel.serverId}}</td>
+      <td> {{dataModel.locationId}}</td>
+      <td> {{dataModel.timestamp}}</td>
+      <td> {{dataModel.temperature}}</td>
+      <td> {{dataModel.minTemperature}}</td>
+      <td> {{dataModel.maxTemperature}}</td>
+      <td> {{dataModel.humidity}}</td>
+      <td> {{dataModel.windSpeed}}</td>
+      <td> {{dataModel.precipitation}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <!--    <a class="btn btn-purple" [routerLink]="['/stations/add', i]">Add new station to server</a>-->
 </div>

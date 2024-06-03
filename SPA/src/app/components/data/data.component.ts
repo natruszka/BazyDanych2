@@ -38,7 +38,7 @@ export class DataComponent implements OnInit{
         [startDate, endDate] = [endDate, startDate]
       }
       this.service.getHistoricalDataFromApi(startDate, endDate).subscribe(data =>this.data = data);
-    
+
   }
   ngOnInit(): void {
     this.getData();

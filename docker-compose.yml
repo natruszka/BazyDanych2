@@ -1,0 +1,129 @@
+version: "3.9"
+
+services:
+  sqlserver0:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: sqlserver0
+    environment:
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "${MSSQL_TCP_PORT0}:1433"
+    volumes:
+      - ./mssql-server0/data:/var/opt/mssql/data
+      - ./mssql-server0/log:/var/opt/mssql/log
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+
+  sqlserver1:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver1
+
+    environment:
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "${MSSQL_TCP_PORT1}:1433"
+    user: root
+    volumes:
+      - ./mssql-server0/data:/var/opt/mssql/data
+      - ./mssql-server0/log:/var/opt/mssql/log
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+
+  sqlserver2:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver2
+    environment:
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "${MSSQL_TCP_PORT2}:1433"
+    user: root
+    volumes:
+      - ./mssql-server1/data:/var/opt/mssql/data
+      - ./mssql-server1/log:/var/opt/mssql/log
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+
+  sqlserver0-configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: sqlserver0-configurator
+    volumes:
+      - ./SqlScripts:/SqlScripts
+    depends_on:
+      sqlserver0:
+        condition: service_healthy
+    command: >
+      bash -c '
+      if [ "${CREATE_DATABASES}" == true ]; then
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver0 -U sa -P ${MSSQL_SA_PASSWORD} -d master -i /SqlScripts/MainDatabase.sql &&
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver1 -U sa -P ${MSSQL_SA_PASSWORD} -d master -Q \"EXEC sp_addlinkedserver @server=N'sqlserver1', @srvproduct=N'', @provider=N'SQLNCLI', @datasrc=N'sqlserver1'\" &&
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver1 -U sa -P ${MSSQL_SA_PASSWORD} -d master -Q \"EXEC sp_addlinkedsrvlogin @rmtsrvname=N'sqlserver1', @useself=N'False', @locallogin=NULL, @rmtuser=N'sa', @rmtpassword=N'${MSSQL_SA_PASSWORD}'\" &&
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver1 -U sa -P ${MSSQL_SA_PASSWORD} -d master -Q \"EXEC sp_addlinkedserver @server=N'sqlserver2', @srvproduct=N'', @provider=N'SQLNCLI', @datasrc=N'sqlserver2'\" &&
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver1 -U sa -P ${MSSQL_SA_PASSWORD} -d master -Q \"EXEC sp_addlinkedsrvlogin @rmtsrvname=N'sqlserver2', @useself=N'False', @locallogin=NULL, @rmtuser=N'sa', @rmtpassword=N'${MSSQL_SA_PASSWORD}'\" &&
+        echo "Sample databases created on sqlserver0";
+      fi;
+      '
+
+  sqlserver1-configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: sqlserver1-configurator
+    volumes:
+      - ./SqlScripts:/SqlScripts
+    depends_on:
+      sqlserver1:
+        condition: service_healthy
+    command: >
+      bash -c '
+      if [ "${CREATE_DATABASES}" == true ]; then
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver1 -U sa -P ${MSSQL_SA_PASSWORD} -d master -i /SqlScripts/ReadingOnlyDatabase.sql;
+        echo "Sample databases created on sqlserver1";
+      fi;
+      '
+
+  sqlserver2-configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: sqlserver2-configurator
+    volumes:
+      - ./SqlScripts:/SqlScripts
+    depends_on:
+      sqlserver2:
+        condition: service_healthy
+    command: >
+      bash -c '
+      if [ "${CREATE_DATABASES}" == true ]; then
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver2 -U sa -P ${MSSQL_SA_PASSWORD} -d master -i /SqlScripts/ReadingOnlyDatabase.sql;
+        echo "Sample databases created on sqlserver2";
+      fi;
+      '
+  weather-app:
+    image: ${DOCKER_REGISTRY-}weather-app
+    build:
+      context: WeatherApp
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+  front-app:
+    image: ${DOCKER_REGISTRY-}front-app
+    build:
+      context: SPA
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"

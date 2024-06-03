@@ -86,7 +86,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      ConnectionStrings__WeatherDatabase: "Server=${SQLSERVER0},1433;Database=WeatherDatabase;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;"
+      ConnectionStrings__WeatherDatabase: "Server=${SQLSERVER0},1433;Database=WeatherDatabase;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=True;"
       Servers: "${SQLSERVER0},${SQLSERVER1}"
       
   front-app:

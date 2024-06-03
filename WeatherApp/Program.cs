@@ -13,6 +13,7 @@ builder.Services.AddCors(options =>
         {
             policy.AllowAnyOrigin()
                 .AllowAnyHeader()
+                .SetIsOriginAllowed((host) => true)
                 .AllowAnyMethod();
         });
 });
@@ -28,14 +29,11 @@ builder.Services.AddScoped<IWeatherService,WeatherService>();
 builder.Services.AddDateOnlyTimeOnlyStringConverters();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
 app.UseCors(corsPolicy);
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

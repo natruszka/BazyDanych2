@@ -10,7 +10,7 @@ public class WeatherDbContext
     public WeatherDbContext(IConfiguration configuration)
     {
         _connection = new SqlConnection(configuration.GetConnectionString("WeatherDatabase"));
-        _servers = configuration.GetSection("servers").Get < List<string>>() ?? throw new InvalidOperationException();
+        _servers = configuration.GetSection("servers").Value.Split(",").ToList() ?? throw new InvalidOperationException();
         _connection.Open();
     }
 
